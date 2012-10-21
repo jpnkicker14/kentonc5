@@ -45,9 +45,11 @@
 ;the default location 
 (defparameter *location* 'living-room)
 
-;checks if chain has been welded to the bucket
+;keeps track if chain has been welded to the bucket
 (defparameter *chain-welded* nil)
 
+;keeps track if bucket is filled
+(defparameter *bucket-filled* nil)
 
 
 ;function that describes the location
@@ -162,8 +164,6 @@
                  (progn (setf *chain-welded* 't)
                         '(the chain is now securely welded to the bucket.))
                '(you do not have a bucket.)))
-
-(defparameter *bucket-filled* nil)
 
 (game-action dunk bucket well garden
              (if *chain-welded* 

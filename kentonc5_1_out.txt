@@ -1,0 +1,104 @@
+dribbling to file "kentonc5_1_out.txt"
+ 
+NIL
+CL-USER(4): (load "kentonc5.lisp")
+; Loading /home04/19/kentonc/ics313/kentonc5/kentonc5.lisp
+T
+CL-USER(5): (game-repl)
+look
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor. You see a
+ tonic-water on the floor.
+pickup bucket
+You are now carrying the bucket
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a frog on the floor. You see a
+ chain on the floor. You see a lime on the floor.
+pickup chain
+You are now carrying the chain
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+walk upstairs
+You are in the attic. There is a giant welding torch in the corner.
+ there is a ladder going downstairs from here. You see a glass on the
+ floor.
+weld chain bucket
+The chain is now securely welded to the bucket.
+walk downstairs
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a frog on the floor. You see a
+ lime on the floor.
+dunk bucket well
+The bucket is now full of water
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+splash bucket wizard
+The wizard awakens from his slumber and greets you warmly. He hands
+     you the magic low-carb donut- you win! The end.
+quit
+CL-USER(10): (load "kentonc5.lisp")
+; Loading /home04/19/kentonc/ics313/kentonc5/kentonc5.lisp
+T
+CL-USER(11): (game-repl)
+look
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor. You see a
+ tonic-water on the floor.
+pickup bucket
+You are now carrying the bucket
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a frog on the floor. You see a
+ chain on the floor. You see a lime on the floor.
+pickup chain
+You are now carrying the chain
+pickup frog
+You are now carrying the frog
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+walk upstairs
+You are in the attic. There is a giant welding torch in the corner.
+ there is a ladder going downstairs from here. You see a glass on the
+ floor.
+weld chain bucket
+The chain is now securely welded to the bucket.
+walk downstairs
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a lime on the floor.
+dunk bucket well
+The bucket is now full of water
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a tonic-water on the floor.
+splash bucket wizard
+The wizard awakens and sees that you stole his frog. He is so upset he
+     banishes you to the netherworlds- you lose! The end.
+quit
+NIL
+CL-USER(6): (dribble)
