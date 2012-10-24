@@ -8,7 +8,7 @@
 
 
 ;allowed commands
-(defparameter *allowed-commands* '(look walk pickup inventory))
+(defparameter *allowed-commands* '(look walk pickup inventory help))
 
 ;nodes for the scenery stored in a list
 (defparameter *nodes* '((living-room (you are in the living-room.
@@ -17,30 +17,30 @@
                             there is a well in front of you.))
                         (attic (you are in the attic.
                             there is a giant welding torch in the corner.))
-			(bar (you are in a refurnished bar.
+                        (bar (you are in a refurnished bar.
                             there is a counter to your left.))))
 
 ;edges will store the paths and the choices you have from that location
 (defparameter *edges* '((living-room (garden west door)  
                                      (attic upstairs ladder)
-				     (bar south revolving-door))
+                                          (bar south revolving-door))
                         (garden (living-room east door))
                         (attic (living-room downstairs ladder))
-			(bar (living-room north revolving-door))))
+                        (bar (living-room north revolving-door))))
 
 ;objects on the ground parmater 
-(defparameter *objects* '(whiskey bucket frog chain coster glass vodka tonic-water lime))
+(defparameter *objects* '(whiskey bucket frog chain coaster glass vodka tonic-water lime))
 
 ; the list of where the objects are located
 (defparameter *object-locations* '((whiskey living-room)
                                    (bucket living-room)
                                    (chain garden)
                                    (frog garden)
-				   (coster bar)
-				   (glass attic)
-				   (vodka bar)
-				   (tonic-water living-room)
-				   (lime garden)))
+                                   (coaster bar)
+                                   (glass attic)
+                                   (vodka bar)
+                                   (tonic-water living-room)
+                                   (lime garden)))
 
 ;the default location 
 (defparameter *location* 'living-room)
@@ -50,6 +50,9 @@
 
 ;keeps track if bucket is filled
 (defparameter *bucket-filled* nil)
+
+;keeps track if glass has vodka in it
+(defparameter *vodka-in-glass* nil)
 
 
 ;function that describes the location
@@ -100,7 +103,7 @@
   (cond ((member object (objects-at *location* *objects* *object-locations*))
          (push (list object 'body) *object-locations*)
          `(you are now carrying the ,object))
-	  (t '(you cannot get that.))))
+          (t '(you cannot get that.))))
 
 ;keeps track of the objects that were picked up 
 (defun inventory ()
@@ -147,6 +150,15 @@
     (princ (coerce (tweak-text (coerce (string-trim "() " (prin1-to-string lst)) 'list) t nil) 'string))
     (fresh-line))
 
+;prints out descriptions of available commands
+(defun help ()
+(princ "HELP:")(terpri)
+  (princ "look: Describes your current location. This includes objects in the room, furniture, and exits.")(terpri)
+  (princ "walk direction: Choose which direction to walk in, and your character will do so, as long as there is some kind of an exit in that direction.")(terpri)
+  (princ "pickup item: Pick up an item and put it in your inventory.")(terpri)
+  (princ "have item: Checks if you have an item in your possession.")(terpri)
+  (princ "inventory: Lists all of the items that you currently have in your possession."))
+
 
 (defmacro game-action (command subj obj place &body body)
   `(progn (defun ,command (subject object)
@@ -157,6 +169,12 @@
                 ,@body
             '(i cant ,command like that.)))
           (pushnew ',command *allowed-commands*)))
+
+(game-action pour vodka glass bar
+             (if (and (have 'glass) (not *vodka-in-glass*))
+                 (progn (setf *vodka-in-glass* 't)
+                        '(the glass now has two ounces of vodka in it.))
+               '(you do not have a glass.)))
 
 
 (game-action weld chain bucket attic
@@ -178,6 +196,3 @@
                                    netherworlds- you lose! the end.))
                    (t '(the wizard awakens from his slumber and greets you warmly. 
                         he hands you the magic low-carb donut- you win! the end.))))
-
-
-
