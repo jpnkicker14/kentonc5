@@ -222,3 +222,13 @@
                                    netherworlds- you lose! the end.))
                    (t '(the wizard awakens from his slumber and greets you warmly. 
                         he hands you the magic low-carb donut- you win! the end.))))
+
+(defmacro add-object (object location &body body)
+  `(progn (if(and(not(member ',object *objects* :test 'equal))
+	      (member ',location (mapcar #'car *nodes*)))
+	      (progn
+		(pushnew ',object *objects*)
+		(pushnew '(,object ,location) *object-locations*) '(sucessfully added object.))
+	      '(try again. the object already exists or the location does not exist.)) 
+	  )
+)
