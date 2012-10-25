@@ -54,6 +54,11 @@
 ;keeps track if glass has vodka in it
 (defparameter *vodka-in-glass* nil)
 
+;keeps track tonic-water has been added to the vodka in the glass
+(defparameter *water-in-drink* nil)
+
+;keeps track of if the complete vodka tonic drink has been made
+(defparameter *complete-vodka-tonic* nil)
 
 ;function that describes the location
 ;this function will use the assoc to find the location based from the nodes
@@ -175,6 +180,27 @@
                  (progn (setf *vodka-in-glass* 't)
                         '(the glass now has two ounces of vodka in it.))
                '(you do not have a glass.)))
+
+(game-action add tonic-water glass bar
+             (if *vodka-in-glass*
+                 (progn (setf *water-in-drink* 't)
+                        '(the glass has been filled to the top with tonic-water.))
+               '(you must add vodka before filling the glass with tonic-water.)))
+
+(game-action garnish lime glass bar
+             (if *water-in-drink* 
+                 (progn (setf *complete-vodka-tonic* 't)
+                        '(the lime has been artistically placed on the rim of the glass.))
+               '(you must finish mixing your drink before garnishing it.)))
+
+(game-action offer glass wizard living-room
+             (cond ((not *complete-vodka-tonic*) '(the drink has not been completely prepared.))
+                   ((have 'coaster) '(the wizard awakens and gladly accepts his favorite drink-a vodka tonic.
+                                      a disco ball is lowered from the ceiling. music starts playing.
+                                      the party has started! congratulations! you win.))
+                   (t '(the wizard awakens and gladly accepts his favorite drink-a vodka tonic.
+                        however once he places it on the coffee table it leaves a ring because you 
+                        forgot to give him a coaster. shame on you! you lose.))))
 
 
 (game-action weld chain bucket attic
