@@ -240,3 +240,31 @@
      '(SUCCESS))
      '(FAIL)))
 )
+
+(defmacro add-path (portal from to din &optional dback)
+  ;location exits
+  `(progn(if(and(member ',from (mapcar #'car *nodes*))
+		   (member ',to (mapcar #'car *nodes*)))
+	     ;path does not exits
+	     (progn(if(not(member ',to (mapcar #'car(cdr(assoc ',from *edges*)))))
+		      ;direction does not exist
+		       (if(not(member ',din (mapcar #'cadr(cdr(assoc ',from *edges*)))))
+			   (progn (pushnew '(,to ,din ,portal) (cdr(assoc ',from *edges*)))  
+			     ;dback is set or two direction 
+				(if(not(equal ',dback nil))
+				    ;direction back does not exist
+				    (if(not(member ',dback (mapcar #'cadr (cdr(assoc ',to *edges*)))))
+					(progn(pushnew '(,from ,dback ,portal) (cdr(assoc ',to *edges*)))
+				      '(direction back added to path))
+					      '(direction back not added to path))
+				  )
+				'(direction to added to path))
+			 ;does exist
+			 '(there is already a location connected to ,from from ,din))
+		     ;does so don't do anything
+		     '(path already exists.))
+		   )
+	   ;else
+	   '(one or more of the locations does not exist) 
+       )) 
+)   
