@@ -226,9 +226,17 @@
 (defmacro add-object (object location &body body)
   `(progn (if(and(not(member ',object *objects* :test 'equal))
 	      (member ',location (mapcar #'car *nodes*)))
+	      ,@body
 	      (progn
 		(pushnew ',object *objects*)
 		(pushnew '(,object ,location) *object-locations*) '(sucessfully added object.))
 	      '(try again. the object already exists or the location does not exist.)) 
 	  )
+)
+
+(defmacro add-location (location &rest desc)
+  `(progn (if(not(member ',location (mapcar #'car *nodes*))) 
+     (progn(pushnew '(,location (,@desc)) *nodes*)
+     '(SUCCESS))
+     '(FAIL)))
 )
