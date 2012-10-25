@@ -1,3 +1,4 @@
+--------------------------WINNING OUTPUT-ORIGINAL CODE------------------------------------------
 dribbling to file "kentonc5_1_out.txt"
  
 NIL
@@ -50,6 +51,8 @@ splash bucket wizard
 The wizard awakens from his slumber and greets you warmly. He hands
      you the magic low-carb donut- you win! The end.
 quit
+
+----------------------------------LOSING OUTPUT-ORIGINAL CODE------------------------------------
 CL-USER(10): (load "kentonc5.lisp")
 ; Loading /home04/19/kentonc/ics313/kentonc5/kentonc5.lisp
 T
@@ -102,3 +105,141 @@ The wizard awakens and sees that you stole his frog. He is so upset he
 quit
 NIL
 CL-USER(6): (dribble)
+
+--------------------------------LOSING OUTPUT-ADDED CODE------------------------------------------
+dribbling to file "amytaka5out.txt"
+ 
+NIL
+[3] CL-USER(7): (load "hw5.lisp")
+;   Loading /home04/a/amytaka/ICS313/hw5.lisp
+T
+[3] CL-USER(8): (game-repl)
+look
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor. You see a
+ tonic-water on the floor.
+pickup tonic-water
+You are now carrying the tonic-water
+walk upstairs
+You are in the attic. There is a giant welding torch in the corner.
+ there is a ladder going downstairs from here. You see a glass on the
+ floor.
+pickup glass
+You are now carrying the glass
+walk downstairs
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a frog on the floor. You see a
+ chain on the floor. You see a lime on the floor.
+pickup lime
+You are now carrying the lime
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+walk south
+You are in a refurnished bar. There is a counter to your left. There
+ is a revolving-door going north from here. You see a coaster on the
+ floor. You see a vodka on the floor.
+pickup vodka
+You are now carrying the vodka
+inventory
+Items- glass vodka tonic-water lime
+pour vodka glass
+The glass now has two ounces of vodka in it.
+add tonic-water glass
+The glass has been filled to the top with tonic-water.
+garnish lime glass
+The lime has been artistically placed on the rim of the glass.
+walk north
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+offer glass wizard
+The wizard awakens and gladly accepts his favorite drink-a vodka
+     tonic. However once he places it on the coffee table it leaves a
+     ring because you forgot to give him a coaster. Shame on you! You
+     lose.
+quit
+NIL
+
+-----------------------------------------WINNING OUTPUT-ADDED CODE-------------------------------------------
+[3] CL-USER(9): (load "hw5.lisp")
+;   Loading /home04/a/amytaka/ICS313/hw5.lisp
+T
+[3] CL-USER(10): (game-repl)
+look
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor. You see a
+ tonic-water on the floor.
+pickup tonic-water
+You are now carrying the tonic-water
+walk north
+You cannot go that way.
+walk weset
+You cannot go that way.
+walk west
+You are in a beautiful garden. There is a well in front of you. There
+ is a door going east from here. You see a frog on the floor. You see a
+ chain on the floor. You see a lime on the floor.
+pickup lime
+You are now carrying the lime
+walk east
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+walk upstairs
+You are in the attic. There is a giant welding torch in the corner.
+ there is a ladder going downstairs from here. You see a glass on the
+ floor.
+pickup glass
+You are now carrying the glass
+walk downstairs
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+walk south
+You are in a refurnished bar. There is a counter to your left. There
+ is a revolving-door going north from here. You see a coaster on the
+ floor. You see a vodka on the floor.
+pickup coaster
+You are now carrying the coaster
+pickup vodka
+You are now carrying the vodka
+inventory
+Items- coaster glass vodka tonic-water lime
+add tonic-water glass
+You must add vodka before filling the glass with tonic-water.
+garnish lime glass
+You must finish mixing your drink before garnishing it.
+pour vodka glass
+The glass now has two ounces of vodka in it.
+add tonic-water glass
+The glass has been filled to the top with tonic-water.
+garnish lime glass
+The lime has been artistically placed on the rim of the glass.
+walk north
+You are in the living-room. A wizard is snoring loudly on the couch.
+ there is a door going west from here. There is a ladder going upstairs
+ from here. There is a revolving-door going south from here. You see a
+ whiskey on the floor. You see a bucket on the floor.
+offer glass wizard
+The wizard awakens and gladly accepts his favorite drink-a vodka
+     tonic. A disco ball is lowered from the ceiling. Music starts
+     playing. The party has started! Congratulations! You win.
+quit
+NIL
+[3] CL-USER(11): (dribble)
+
