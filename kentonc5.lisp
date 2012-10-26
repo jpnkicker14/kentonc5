@@ -164,7 +164,7 @@
   (princ "have item: Checks if you have an item in your possession.")(terpri)
   (princ "inventory: Lists all of the items that you currently have in your possession."))
 
-
+;macro that creates an action that can be performed if the user is in the correct location and has the correct objects
 (defmacro game-action (command subj obj place &body body)
   `(progn (defun ,command (subject object)
             (if (and (eq *location* ',place)
@@ -175,24 +175,30 @@
             '(i cant ,command like that.)))
           (pushnew ',command *allowed-commands*)))
 
+;uses game-action macro to allow user to pour vodka in the glass if they have both items and are in the bar.
 (game-action pour vodka glass bar
              (if (and (have 'glass) (not *vodka-in-glass*))
                  (progn (setf *vodka-in-glass* 't)
                         '(the glass now has two ounces of vodka in it.))
                '(you do not have a glass.)))
 
+;uses game-action macro to allow user to pour tonic-water in the glass if they have both items, are in the bar, and have already poured vodka in the glass.
 (game-action add tonic-water glass bar
              (if *vodka-in-glass*
                  (progn (setf *water-in-drink* 't)
                         '(the glass has been filled to the top with tonic-water.))
                '(you must add vodka before filling the glass with tonic-water.)))
 
+;uses game-action macro to allow user to garnish the glass with a lime if they have both items, are in the bar, and have already mixed together the vodka and tonic-water.
 (game-action garnish lime glass bar
              (if *water-in-drink* 
                  (progn (setf *complete-vodka-tonic* 't)
                         '(the lime has been artistically placed on the rim of the glass.))
                '(you must finish mixing your drink before garnishing it.)))
 
+;uses game-action macro to allow user to offer the glass to the wizard if they have the glass, are in the living room, and have already mixed together the vodka and tonic-water and garnished it with the lime.
+;if the user also has picked up the coaster, the wizard will be happy and the user wins.
+;if the user has NOT picked up the coaster, the wizard will be unhappy and the user loses.
 (game-action offer glass wizard living-room
              (cond ((not *complete-vodka-tonic*) '(the drink has not been completely prepared.))
                    ((have 'coaster) '(the wizard awakens and gladly accepts his favorite drink-a vodka tonic.
@@ -202,19 +208,21 @@
                         however once he places it on the coffee table it leaves a ring because you 
                         forgot to give him a coaster. shame on you! you lose.))))
 
-
+;uses the game-action macro to allow the user to weld the chain to the bucket if they have both items and are in the attic.
 (game-action weld chain bucket attic
              (if (and (have 'bucket) (not *chain-welded*))
                  (progn (setf *chain-welded* 't)
                         '(the chain is now securely welded to the bucket.))
                '(you do not have a bucket.)))
 
+;uses the game-action macro to allow the user to dunk the bucket in the well if they have a bucket, are in the garden, and have already welded the chain to the bucket.
 (game-action dunk bucket well garden
              (if *chain-welded* 
                  (progn (setf *bucket-filled* 't)
                         '(the bucket is now full of water))
                '(the water level is too low to reach.)))
 
+;uses the game-action macro to allow the user to splash the bucket of water on the wizard if they have a bucket, are in the living-room, and the bucket has been successfully filled with water.
 (game-action splash bucket wizard living-room
              (cond ((not *bucket-filled*) '(the bucket has nothing in it.))
                    ((have 'frog) '(the wizard awakens and sees that you stole his frog. 
@@ -223,48 +231,62 @@
                    (t '(the wizard awakens from his slumber and greets you warmly. 
                         he hands you the magic low-carb donut- you win! the end.))))
 
+;macro that allows user to add a new object, using the parameters object(name of object) and the location (location of object).
+;the object must not already exist, and the location must already exist 
 (defmacro add-object (object location &body body)
+;checks if the object already exists
   `(progn (if(and(not(member ',object *objects* :test 'equal))
+		;checks if the location already exists
 	      (member ',location (mapcar #'car *nodes*)))
 	      ,@body
+		;adds location and object names to the defparameters
 	      (progn
 		(pushnew ',object *objects*)
 		(pushnew '(,object ,location) *object-locations*) '(sucessfully added object.))
+		;error statement if the location does not exist or if the object already exists.
 	      '(try again. the object already exists or the location does not exist.)) 
 	  )
 )
 
+;macro allows user to add a new location, using the parameters location (name of location) and a description of the location.
+;the location must not already exist.
 (defmacro add-location (location &rest desc)
+;checks if location already exists
   `(progn (if(not(member ',location (mapcar #'car *nodes*))) 
-     (progn(pushnew '(,location (,@desc)) *nodes*)
-     '(SUCCESS))
-     '(FAIL)))
+	;adds location and description to defparameter *nodes*
+     (progn(pushnew '(,location (,@desc)) *nodes*))
+	;error message if the location already exists.
+     '(try again. the location already exists.)))
 )
 
+;macro allows user to add a new path, using the parameters portal (type of path), from(starting location), to (ending location), din (direction from starting location to ending location), and optional dback (direction from ending location to starting location)
+;both locations must exist, and both locations cannot already have other locations in the designated positions. the two locations cannot already have a path between them.
 (defmacro add-path (portal from to din &optional dback)
-  ;location exits
+  ;checks if both locations exist
   `(progn(if(and(member ',from (mapcar #'car *nodes*))
 		   (member ',to (mapcar #'car *nodes*)))
-	     ;path does not exits
+	     ;checks if a path already exists between the two locations
 	     (progn(if(not(member ',to (mapcar #'car(cdr(assoc ',from *edges*)))))
-		      ;direction does not exist
+		      ;checks if the starting location does not already have a path in the requested direction
 		       (if(not(member ',din (mapcar #'cadr(cdr(assoc ',from *edges*)))))
+			;adds new path to defparameter *edges*
 			   (progn (pushnew '(,to ,din ,portal) (cdr(assoc ',from *edges*)))  
-			     ;dback is set or two direction 
+			     ;checks if path is two-directional 
 				(if(not(equal ',dback nil))
-				    ;direction back does not exist
+				    ;checks if the ending location does not already have a path in the requested direction
 				    (if(not(member ',dback (mapcar #'cadr (cdr(assoc ',to *edges*)))))
+					;adds new path in opposite direction to defparamter *edges*
 					(progn(pushnew '(,from ,dback ,portal) (cdr(assoc ',to *edges*)))
 				      '(direction back added to path))
 					      '(direction back not added to path))
 				  )
 				'(direction to added to path))
-			 ;does exist
+			 ;error statement if there is already a location connected to the starting location in the requested direction
 			 '(there is already a location connected to ,from from ,din))
-		     ;does so don't do anything
+		     ;error statement if there is already a path connecting the two locations
 		     '(path already exists.))
 		   )
-	   ;else
+	   ;error statement if one or both or the locations do not exist.
 	   '(one or more of the locations does not exist) 
        )) 
 )   
