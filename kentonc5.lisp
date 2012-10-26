@@ -157,12 +157,7 @@
 
 ;prints out descriptions of available commands
 (defun help ()
-(princ "HELP:")(terpri)
-  (princ "look: Describes your current location. This includes objects in the room, furniture, and exits.")(terpri)
-  (princ "walk direction: Choose which direction to walk in, and your character will do so, as long as there is some kind of an exit in that direction.")(terpri)
-  (princ "pickup item: Pick up an item and put it in your inventory.")(terpri)
-  (princ "have item: Checks if you have an item in your possession.")(terpri)
-  (princ "inventory: Lists all of the items that you currently have in your possession."))
+  (format t "You have reached the list of commands. ~% look: Describes your current location. This includes objects in the room furniture and exit. ~% walk direction: Choose which direction to walk in and your character will do so as long as there is some kind of an exit in that direction. ~% pickup item: pick up an item and put it in your inventory. ~% have item: Checks if you have an item in your possession. ~% inventory: Lists all of the items that you currently have in your possession."))
 
 ;macro that creates an action that can be performed if the user is in the correct location and has the correct objects
 (defmacro game-action (command subj obj place &body body)
@@ -236,16 +231,16 @@
 (defmacro add-object (object location &body body)
 ;checks if the object already exists
   `(progn (if(and(not(member ',object *objects* :test 'equal))
-		;checks if the location already exists
-	      (member ',location (mapcar #'car *nodes*)))
-	      ,@body
-		;adds location and object names to the defparameters
-	      (progn
-		(pushnew ',object *objects*)
-		(pushnew '(,object ,location) *object-locations*) '(sucessfully added object.))
-		;error statement if the location does not exist or if the object already exists.
-	      '(try again. the object already exists or the location does not exist.)) 
-	  )
+                 ;checks if the location already exists
+                       (member ',location (mapcar #'car *nodes*)))
+                    ,@body
+            ;adds location and object names to the defparameters
+                  (progn
+                    (pushnew ',object *objects*)
+                    (pushnew '(,object ,location) *object-locations*) '(sucessfully added object.))
+                  ;error statement if the location does not exist or if the object already exists.
+                        '(try again. the object already exists or the location does not exist.)) 
+            )
 )
 
 ;macro allows user to add a new location, using the parameters location (name of location) and a description of the location.
@@ -253,9 +248,9 @@
 (defmacro add-location (location &rest desc)
 ;checks if location already exists
   `(progn (if(not(member ',location (mapcar #'car *nodes*))) 
-	;adds location and description to defparameter *nodes*
-     (progn(pushnew '(,location (,@desc)) *nodes*))
-	;error message if the location already exists.
+              ;adds location and description to defparameter *nodes*
+     (progn(pushnew '(,location (,@desc)) *nodes*)'(successfully added object.))
+     ;error message if the location already exists.
      '(try again. the location already exists.)))
 )
 
@@ -264,29 +259,26 @@
 (defmacro add-path (portal from to din &optional dback)
   ;checks if both locations exist
   `(progn(if(and(member ',from (mapcar #'car *nodes*))
-		   (member ',to (mapcar #'car *nodes*)))
-	     ;checks if a path already exists between the two locations
-	     (progn(if(not(member ',to (mapcar #'car(cdr(assoc ',from *edges*)))))
-		      ;checks if the starting location does not already have a path in the requested direction
-		       (if(not(member ',din (mapcar #'cadr(cdr(assoc ',from *edges*)))))
-			;adds new path to defparameter *edges*
-			   (progn (pushnew '(,to ,din ,portal) (cdr(assoc ',from *edges*)))  
-			     ;checks if path is two-directional 
-				(if(not(equal ',dback nil))
-				    ;checks if the ending location does not already have a path in the requested direction
-				    (if(not(member ',dback (mapcar #'cadr (cdr(assoc ',to *edges*)))))
-					;adds new path in opposite direction to defparamter *edges*
-					(progn(pushnew '(,from ,dback ,portal) (cdr(assoc ',to *edges*)))
-				      '(direction back added to path))
-					      '(direction back not added to path))
-				  )
-				'(direction to added to path))
-			 ;error statement if there is already a location connected to the starting location in the requested direction
-			 '(there is already a location connected to ,from from ,din))
-		     ;error statement if there is already a path connecting the two locations
-		     '(path already exists.))
-		   )
-	   ;error statement if one or both or the locations do not exist.
-	   '(one or more of the locations does not exist) 
+                   (member ',to (mapcar #'car *nodes*)))
+                  ;checks if a path already exists between the two locations
+                  (progn(if(not(member ',to (mapcar #'car(cdr(assoc ',from *edges*)))))
+                                  ;checks if the starting location does not already have a path in the requested direction
+                                   (if(not(member ',din (mapcar #'cadr(cdr(assoc ',from *edges*)))))
+                                       ;adds new path to defparameter *edges*
+                                          (progn (pushnew '(,to ,din ,portal) (cdr(assoc ',from *edges*)))  
+                                                      ;checks if path is two-directional 
+                                                 (if(not(equal ',dback nil))
+                                                         ;checks if the ending location does not already have a path in the requested direction
+                                                         (if(not(member ',dback (mapcar #'cadr (cdr(assoc ',to *edges*)))))
+                                                             ;adds new path in opposite direction to defparamter *edges*
+                                                             (progn(pushnew '(,from ,dback ,portal) (cdr(assoc ',to *edges*)))
+                                                                         '(path has been added.))
+                                                                 '(direction back not added to path))))
+                                      ;error statement if there is already a location connected to the starting location in the requested direction
+                                      '(there is already a location connected to ,from from ,din))
+                               ;error statement if there is already a path connecting the two locations
+                               '(path already exists.))
+                           )
+              ;error statement if one or both or the locations do not exist.
+              '(one or more of the locations does not exist) 
        )) 
-)   
